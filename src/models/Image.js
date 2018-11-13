@@ -7,6 +7,42 @@ let schema = {
   images: []
 };
 
+const getAll = () => {
+  if (!fs.existsSync(filepath)) {
+    return schema;
+  }
+
+  let data;
+
+  try {
+    data = fs.readFileSync(filepath);
+  } catch (error) {
+    throw error;
+  }
+
+  schema = JSON.parse(data);
+  return schema.images;
+};
+
+const getSingle = async imageID => {
+  let images;
+  try {
+    images = await getAll();
+  } catch (error) {
+    throw error;
+  }
+
+  if (!images.length) {
+    throw "No images available";
+  }
+
+  const image = images.find(image => image.id === imageID);
+
+  if (!image) throw "Image not found";
+
+  return image;
+};
+
 const createID = () => {
   var text = "";
   var possible =
@@ -47,5 +83,6 @@ const create = payload => {
 };
 
 module.exports = {
-  create
+  create,
+  getSingle
 };

@@ -8,6 +8,7 @@ const server = require("../setup.js").server;
 chai.use(require("chai-http"));
 
 const requestURL = "/images";
+let imageID;
 let imageData = {
   name: "test-image",
   mimetype: "jpeg"
@@ -29,8 +30,8 @@ describe("/image", () => {
       }
 
       expect(request).to.have.status(200);
-      expect(request.body).to.have.all.keys("message", "image");
-      expect(request.body.image).to.have.all.keys(
+      expect(request.body).to.have.all.keys("message", "data");
+      expect(request.body.data).to.have.all.keys(
         "id",
         "name",
         "mimetype",
@@ -51,5 +52,35 @@ describe("/image", () => {
     });
 
     // Add test when sending files with invalid mimetype
+
+    describe("GET image", () => {
+      before(async () => {
+        let request;
+        try {
+          request = await chai
+            .request(server)
+            .post(requestURL)
+            .attach(imageData.name, imageData.url);
+          imageID = request.body.data.id;
+        } catch (error) {
+          throw error;
+        }
+      });
+
+      it("should return image", async () => {
+        let request;
+        try {
+          request = await chai
+            .request(server)
+            .get(`${requestURL}?name=${imageID}.${imageData.mimetype}`);
+        } catch (error) {
+          request = error;
+        }
+
+        expect(request).to.have.status(200);
+        expect(request.body).to.have.all.keys("message", "data");
+        expect(request.body.data).to.have.all.keys("id", "name", "url");
+      });
+    });
   });
 });

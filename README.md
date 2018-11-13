@@ -4,8 +4,8 @@
 
 ## Tasks
 
-- [ ] Receive and store image file locally
-- [ ] Return unique ID to retrieve the image by
+- [x] Receive and store image file locally
+- [x] Return unique ID to retrieve the image by
 - [ ] Respond with image based on unique ID provided
 - [ ] Change image mimetype & size based on request details
 - [ ] Write integration tests
