@@ -52,12 +52,12 @@ describe("/image", () => {
     });
 
     // Add test when sending files with invalid mimetype
-
-    describe("GET image", () => {
-      before(async () => {
-        let request;
+  });
+  describe("GET image", () => {
+    before(async () => {
+      if (!imageID) {
         try {
-          request = await chai
+          const request = await chai
             .request(server)
             .post(requestURL)
             .attach(imageData.name, imageData.url);
@@ -65,22 +65,37 @@ describe("/image", () => {
         } catch (error) {
           throw error;
         }
-      });
+      }
+    });
 
-      it("should return image", async () => {
-        let request;
-        try {
-          request = await chai
-            .request(server)
-            .get(`${requestURL}?name=${imageID}.${imageData.mimetype}`);
-        } catch (error) {
-          request = error;
-        }
+    // Clean up storage using after() method to delete test image(s)
+    // after(() => {})
 
-        expect(request).to.have.status(200);
-        expect(request.body).to.have.all.keys("message", "data");
-        expect(request.body.data).to.have.all.keys("id", "name", "url");
-      });
+    it("should return image", async () => {
+      let request;
+      try {
+        request = await chai
+          .request(server)
+          .get(`${requestURL}?name=${imageID}.${imageData.mimetype}`);
+      } catch (error) {
+        request = error;
+      }
+
+      expect(request).to.have.status(200);
+    });
+
+    it("should return modified image", async () => {
+      let request;
+      try {
+        request = await chai
+          .request(server)
+          .get(`${requestURL}?name=${imageID}.png`);
+      } catch (error) {
+        request = error;
+      }
+
+      expect(request).to.have.status(200);
+      // Check body content
     });
   });
 });
