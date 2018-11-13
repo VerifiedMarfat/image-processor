@@ -29,7 +29,13 @@ describe("/image", () => {
       }
 
       expect(request).to.have.status(200);
-      expect(request.body).to.have.all.keys("message", "files");
+      expect(request.body).to.have.all.keys("message", "image");
+      expect(request.body.image).to.have.all.keys(
+        "id",
+        "name",
+        "mimetype",
+        "path"
+      );
     });
 
     it("should return 400 response when no image is provided", async () => {

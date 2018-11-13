@@ -1,5 +1,6 @@
 const express = require("express");
 const uploadMiddleware = require("../utils/middleware").uploads;
+const imageModel = require("../models/Image");
 
 const router = express.Router();
 
@@ -15,9 +16,23 @@ router.post("/", uploadMiddleware, (request, response) => {
       .json({ message: "Bad Request! Missing file(s) in request." });
   }
 
+  // Iterate over files
+  const file = request.files[0];
+
+  let image;
+  try {
+    image = imageModel.create({
+      name: file.fieldname,
+      mimetype: file.mimetype,
+      path: file.path
+    });
+  } catch (error) {
+    response.status(500).json({ message: error });
+  }
+
   response.send({
     message: "success",
-    files
+    image
   });
 });
 
