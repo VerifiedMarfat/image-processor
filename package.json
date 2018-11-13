@@ -1,0 +1,23 @@
+{
+  "name": "image-processor",
+  "version": "1.0.0",
+  "description": "A simple API that handles image files",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VerifiedToken/image-processor.git"
+  },
+  "author": "Marfat",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VerifiedToken/image-processor/issues"
+  },
+  "homepage": "https://github.com/VerifiedToken/image-processor#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
